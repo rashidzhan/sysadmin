@@ -1,0 +1,464 @@
+<script>
+window.onload = function () {//onload begin
+ var table = document.getElementById('calculationTable');
+ var outputCell = document.getElementById('outputCell');
+ var inp = table.getElementsByTagName('input');
+ var len = inp.length;
+ var sum, elem, next;
+
+ function calculate () {//calculate begin
+ sum = 0; document.getElementById('test').innerHTML = '';//для проверки
+ for (var i = 0; i < len; i++) { document.getElementById('test').innerHTML += sum + ' &#8594 '; // для проверки
+ elem = inp[i];
+ switch (elem.type) {
+ case 'checkbox': case 'radio': {
+ if (elem.checked == true) {
+ next = elem.parentNode.parentNode.cells[elem.parentNode.cellIndex + 1];
+ sum += parseInt(next.innerHTML);
+ }
+ break;
+ }
+ case 'text': {
+ if (isNaN(elem.value) == false) {
+ if (elem.value != '') {
+ next = elem.parentNode.parentNode.cells[elem.parentNode.cellIndex + 1];
+ sum += parseInt(elem.value) * parseInt(next.innerHTML);
+ }
+ } else {
+ alert('Содержимое поля "' + elem.parentNode.parentNode.cells[elem.parentNode.cellIndex - 1].innerHTML + '"\n не является числом');
+ }
+ break;
+ }
+ }
+ }
+ return sum;
+ }//calculate end
+
+ outputCell.innerHTML = calculate();
+
+ table.onkeyup = function (e) {
+ e = e || event;
+ if (e.keyCode != 8 && e.keyCode != 46) {
+ outputCell.innerHTML = calculate();
+ }
+ }
+
+ //onchange лучше, но не корректно работает в IE
+ table.onclick = function (e) {
+ e = e || event;
+ var target = e.target || e.srcElement;
+ if (target.tagName == 'INPUT') {
+ outputCell.innerHTML = calculate();
+ }
+ }
+
+
+}//onload end
+</script>
+
+<table border="1" class="calculationTable" id="calculationTable">
+  
+    <td colspan="3"><center>
+        Ориентировочный расчет стоимости газификации!
+      </center></td>
+  <tr>
+    <td>Заказчик:</td>
+    <td><input type="radio" name="customer" checked="checked">
+      физ. лицо</td>
+    <td class="figvam">1</td>
+  </tr>
+  <tr>
+    <td>Заказчик:</td>
+    <td><input type="radio" name="customer">
+      юр. лицо</td>
+    <td class="figvam">2</td>
+  </tr>
+  <tr>
+    <td>Выезд проектировщика-оценщика</td>
+    <td><INPUT TYPE="CHECKBOX"></td>
+    <td class="figvam">0</td>
+  </tr>
+  <tr>
+    <td colspan="3"><center>
+        Давление газа:
+      </center></td>
+  </tr>
+  <tr>
+    <td>Низкое [до 5 кПа (0,05 кгс/см2)]</td>
+    <td><input type="radio" name="presure" checked="checked"></td>
+    <td class="figvam">4</td>
+  </tr>
+  <tr>
+    <td>Среднее [до 0,3 мПа (3 кгс/см2)]</td>
+    <td><input type="radio" name="presure"></td>
+    <td class="figvam">5</td>
+  </tr>
+  <tr>
+    <td>Высокое [до 0,6 мПа (6 кгс/см2)]</td>
+    <td><input type="radio" name="presure"></td>
+    <td class="figvam">6</td>
+  </tr>
+  <tr>
+    <td>Высокое [до 1,2 мПа (12 кгс/см2)]</td>
+    <td><input type="radio" name="presure"></td>
+    <td class="figvam">7</td>
+  </tr>
+  <tr>
+    <td colspan="3"><center>
+        Помещение:
+      </center></td>
+  </tr>
+  <tr>
+    <td>Жилой дом</td>
+    <td><INPUT TYPE="CHECKBOX"></td>
+    <td class="figvam">8</td>
+  </tr>
+  <tr>
+    <td>не жилой (отдельно стоящая котельная, баня)</td>
+    <td><INPUT TYPE="CHECKBOX"></td>
+    <td class="figvam">9</td>
+  </tr>
+  <tr>
+    <td>Ресторан, кафе, гараж</td>
+    <td><INPUT TYPE="CHECKBOX"></td>
+    <td class="figvam">10</td>
+  </tr>
+  <tr>
+    <td>Производственная база</td>
+    <td><INPUT TYPE="CHECKBOX"></td>
+    <td class="figvam">11</td>
+  </tr>
+  <tr>
+    <td colspan="3"><center>
+        Виды работ:
+      </center></td>
+  </tr>
+  <tr>
+    <td>Получение технических условии</td>
+    <td><INPUT TYPE="CHECKBOX"></td>
+    <td class="figvam">12</td>
+  </tr>
+  <tr>
+    <td>Разработать рабочий проект</td>
+    <td><INPUT TYPE="CHECKBOX"></td>
+    <td class="figvam">13</td>
+  </tr>
+  <tr>
+    <td>И.Т.Д.</td>
+    <td><INPUT TYPE="CHECKBOX"></td>
+    <td class="figvam">14</td>
+  </tr>
+  <tr>
+    <td>Пуско-наладка</td>
+    <td><INPUT TYPE="CHECKBOX"></td>
+    <td class="figvam">15</td>
+  </tr>
+  <tr>
+    <td colspan="3"><center>
+        Затраты на материалы:
+      </center></td>
+  </tr>
+  <tr>
+    <td>Демонтаж(перенос линии)</td>
+    <td><INPUT TYPE="CHECKBOX"></td>
+    <td class="figvam">16</td>
+  </tr>
+  <tr>
+    <td>Врезка в существующий газопровод</td>
+    <td><INPUT TYPE="CHECKBOX"></td>
+    <td class="figvam">17</td>
+  </tr>
+  <tr>
+    <td>Длина копки траншеи (общая)</td>
+    <td><INPUT TYPE="TEXT">
+      метр</td>
+    <td class="figvam">18</td>
+  </tr>
+  <tr>
+    <td>Проход через асфальтированную дорогу</td>
+    <td><INPUT TYPE="TEXT">
+      количество</td>
+    <td class="figvam">19</td>
+  </tr>
+  <tr>
+    <td>Проход через железную дорогу (рельсы)</td>
+    <td><INPUT TYPE="TEXT">
+      количество</td>
+    <td class="figvam">20</td>
+  </tr>
+  <tr>
+    <td>Проход через коммуникабельные линии</td>
+    <td><INPUT TYPE="TEXT">
+      количество</td>
+    <td class="figvam">21</td>
+  </tr>
+  <tr>
+    <td>Количество стоек (опоры для газопровода);</td>
+    <td><INPUT TYPE="TEXT">
+      количество</td>
+    <td class="figvam">22</td>
+  </tr>
+  <tr>
+    <td>Входы и выходы газопровода из земли</td>
+    <td><INPUT TYPE="TEXT">
+      количество</td>
+    <td class="figvam">23</td>
+  </tr>
+  <tr>
+    <td>Труба полиэтилен Ø 32</td>
+    <td><INPUT TYPE="TEXT">
+      метр</td>
+    <td class="figvam">24</td>
+  </tr>
+  <tr>
+    <td>Труба полиэтилен Ø 63</td>
+    <td><INPUT TYPE="TEXT">
+      метр</td>
+    <td class="figvam">25</td>
+  </tr>
+  <tr>
+    <td>Труба полиэтилен Ø 90</td>
+    <td><INPUT TYPE="TEXT">
+      метр</td>
+    <td class="figvam">26</td>
+  </tr>
+  <tr>
+    <td>Труба полиэтилен Ø 125</td>
+    <td><INPUT TYPE="TEXT">
+      метр</td>
+    <td class="figvam">27</td>
+  </tr>
+  <tr>
+    <td>Труба полиэтилен Ø 160</td>
+    <td><INPUT TYPE="TEXT">
+      метр</td>
+    <td class="figvam">28</td>
+  </tr>
+  <tr>
+    <td>Труба полиэтилен Ø 225</td>
+    <td><INPUT TYPE="TEXT">
+      метр</td>
+    <td class="figvam">29</td>
+  </tr>
+  <tr>
+    <td>Труба полиэтилен Ø 315</td>
+    <td><INPUT TYPE="TEXT">
+      метр</td>
+    <td class="figvam">30</td>
+  </tr>
+  <tr>
+    <td>Труба сталь Ø 15</td>
+    <td><INPUT TYPE="TEXT">
+      метр</td>
+    <td class="figvam">31</td>
+  </tr>
+  <tr>
+    <td>Труба сталь Ø 20</td>
+    <td><INPUT TYPE="TEXT">
+      метр</td>
+    <td class="figvam">32</td>
+  </tr>
+  <tr>
+    <td>Труба сталь Ø 25</td>
+    <td><INPUT TYPE="TEXT">
+      метр</td>
+    <td class="figvam">33</td>
+  </tr>
+  <tr>
+    <td>Труба сталь Ø 32</td>
+    <td><INPUT TYPE="TEXT">
+      метр</td>
+    <td class="figvam">34</td>
+  </tr>
+  <tr>
+    <td>Труба сталь Ø 57</td>
+    <td><INPUT TYPE="TEXT">
+      метр</td>
+    <td class="figvam">35</td>
+  </tr>
+  <tr>
+    <td>Труба сталь Ø 76</td>
+    <td><INPUT TYPE="TEXT">
+      метр</td>
+    <td class="figvam">36</td>
+  </tr>
+  <tr>
+    <td>Труба сталь Ø 89</td>
+    <td><INPUT TYPE="TEXT">
+      метр</td>
+    <td class="figvam">37</td>
+  </tr>
+  <tr>
+    <td>Труба сталь Ø 108</td>
+    <td><INPUT TYPE="TEXT">
+      метр</td>
+    <td class="figvam">38</td>
+  </tr>
+  <tr>
+    <td>Труба сталь Ø 159</td>
+    <td><INPUT TYPE="TEXT">
+      метр</td>
+    <td class="figvam">39</td>
+  </tr>
+  <tr>
+    <td>Труба сталь Ø 219</td>
+    <td><INPUT TYPE="TEXT">
+      метр</td>
+    <td class="figvam">40</td>
+  </tr>
+  <tr>
+    <td>Труба сталь Ø 273</td>
+    <td><INPUT TYPE="TEXT">
+      метр</td>
+    <td class="figvam">41</td>
+  </tr>
+  <tr>
+    <td>Труба сталь Ø 325</td>
+    <td><INPUT TYPE="TEXT">
+      метр</td>
+    <td class="figvam">42</td>
+  </tr>
+  <tr>
+    <td>Количество точек (спуск на оборудование)</td>
+    <td><INPUT TYPE="TEXT">
+      количество</td>
+    <td class="figvam">43</td>
+  </tr>
+  <tr>
+    <td>Проход газопровода через стену</td>
+    <td><INPUT TYPE="TEXT">
+      количество</td>
+    <td class="figvam">44</td>
+  </tr>
+  
+    <td colspan="3"><center>
+        Максимальный расход газа:
+      </center></td>
+  <tr>
+    <td>0,04 м3/ч до 2,5 м3/ч (счетчик G1,6)</td>
+    <td><input type="radio" name="counter"></td>
+    <td class="figvam">45</td>
+  </tr>
+  <tr>
+    <td>2,5 м3/ч до 4,0 м3/ч (счетчик G2,5)</td>
+    <td><input type="radio" name="counter"></td>
+    <td class="figvam">46</td>
+  </tr>
+  <tr>
+    <td>4,0 м3/ч до 6,0 м3/ч (счетчик G4)</td>
+    <td><input type="radio" name="counter" checked="checked"></td>
+    <td class="figvam">47</td>
+  </tr>
+  <tr>
+    <td>6,0 м3/ч до 10,0 м3/ч (счетчик G6)</td>
+    <td><input type="radio" name="counter"></td>
+    <td class="figvam">48</td>
+  </tr>
+  <tr>
+    <td>10,0 м3/ч до 16,0 м3/ч (счетчик G10)</td>
+    <td><input type="radio" name="counter"></td>
+    <td class="figvam">49</td>
+  </tr>
+  <tr>
+    <td>16,0 м3/ч до 25,0 м3/ч (счетчик G16)</td>
+    <td><input type="radio" name="counter"></td>
+    <td class="figvam">50</td>
+  </tr>
+  <tr>
+    <td>25,0 м3/ч до 40,0 м3/ч (счетчик G25)</td>
+    <td><input type="radio" name="counter"></td>
+    <td class="figvam">51</td>
+  </tr>
+  <tr>
+    <td>40,0 м3/ч до 65,0 м3/ч (счетчик G40)</td>
+    <td><input type="radio" name="counter"></td>
+    <td class="figvam">52</td>
+  </tr>
+  <tr>
+    <td>65,0 м3/ч до 100,0 м3/ч (счетчик G65)</td>
+    <td><input type="radio" name="counter"></td>
+    <td class="figvam">53</td>
+  </tr>
+  <tr>
+    <td>100,0 м3/ч до 160,0 м3/ч (счетчик G100)</td>
+    <td><input type="radio" name="counter"></td>
+    <td class="figvam">54</td>
+  </tr>
+  <tr>
+    <td>160,0 м3/ч до 250,0 м3/ч (счетчик G160)</td>
+    <td><input type="radio" name="counter"></td>
+    <td class="figvam">55</td>
+  </tr>
+  <tr>
+    <td>250,0 м3/ч до 400,0 м3/ч (счетчик G250)</td>
+    <td><input type="radio" name="counter"></td>
+    <td class="figvam">56</td>
+  </tr>
+  <tr>
+    <td>400,0 м3/ч до 650,0 м3/ч (счетчик G400)</td>
+    <td><input type="radio" name="counter"></td>
+    <td class="figvam">57</td>
+  </tr>
+  <tr>
+    <td colspan="3"><center>
+        + Водопровод:
+      </center></td>
+  </tr>
+  <tr>
+    <td>Врезка в существующий водопровод</td>
+    <td><INPUT TYPE="CHECKBOX"></td>
+    <td class="figvam">58</td>
+  </tr>
+  <tr>
+    <td>Труба полиэтилен Ø 50 или Ø 100</td>
+    <td><INPUT TYPE="TEXT">
+      метр</td>
+    <td class="figvam">59</td>
+  </tr>
+  <tr>
+    <td>Длина копки траншеи</td>
+    <td><INPUT TYPE="TEXT">
+      метр</td>
+    <td class="figvam">60</td>
+  </tr>
+  <tr>
+    <td>Количество установок колодцев</td>
+    <td><INPUT TYPE="TEXT">
+      количество</td>
+    <td class="figvam">61</td>
+  </tr>
+  <tr>
+    <td colspan="3"><center>
+        + Отопление:
+      </center></td>
+  </tr>
+  <tr>
+    <td>Отапливаемая площадь</td>
+    <td><INPUT TYPE="TEXT">
+      м2</td>
+    <td class="figvam">62</td>
+  </tr>
+  <tr>
+    <td>Установка и обвязка: котел, насос, фильтр,...</td>
+    <td><INPUT TYPE="CHECKBOX"></td>
+    <td class="figvam">63</td>
+  </tr>
+  <tr>
+    <td>Количество комнат, где будет теплый пол</td>
+    <td><INPUT TYPE="TEXT">
+      шт</td>
+    <td class="figvam">64</td>
+  </tr>
+  <tr bgcolor="#FF0000">
+    <td colspan="3"><center>
+        Примерная общая стоимость работ:
+      </center></td>
+  </tr>
+  <tr>
+    <td>Итого примерно:</td>
+    <td id="outputCell"></td>
+    <td>тенге</td>
+  </tr>
+</table>
+<!--для теста-->
+<div id="test" class="figvam"> </div>
